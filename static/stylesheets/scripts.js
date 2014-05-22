@@ -515,22 +515,10 @@ $( document ).ready(function() {
 
 });
 
-// var pathArray = window.location.pathname.split('/');
 var pathArray = document.URL.split('/');
-var pathDoamin = pathArray[2];
-var pathLink = pathArray[3];
-var pathSlice = pathLink.slice(0, -5);
+var pathDomain = pathArray[2];
+var pathSlice = pathArray[4] + '_' + pathArray[5];
 var pathPage = pathSlice.split('_')[1];
-// 
-// console.log('pathArray ='+pathArray);
-// console.log('pathLink ='+pathLink);
-// console.log('pathSlice ='+pathSlice);
-
-// var pathArryURL = document.URL.split('/');
-// var pathLinkURL = pathArryURL[2];
-// console.log('pathArryURL ='+pathArryURL);
-// console.log('pathLinkURL ='+pathLinkURL);
-// console.log('Test: '+pathArryURL[3]);
 
 var defSkinSel = {backgroundColor:'rgb(255,165,0)', color:'#FFFFFF'};
 var epaSkinSel = {backgroundColor:'rgb(255,165,0)', color:'#FFFFFF'};
@@ -539,10 +527,9 @@ var browserWidth = $(window).width();
 var browserHeight = $(window).height();
 var winleft = (browserWidth / 2) - 220 + "px";
 var wintop = (browserHeight / 2) - 30 + "px";
-// var doneDiv = document.getElementById("popup");
 // Model name
 var model = pathSlice.slice(0, -5).split('_')[0];
 // Remove query string from 'pathSlice' var
 if (pathPage.indexOf("?")) {
 	pathPage = pathPage.split('.html?')[0];
-}
+}

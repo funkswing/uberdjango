@@ -20,7 +20,6 @@ builtins:
 - django_wsgi: on
 
 env_variables:
-  DJANGO_SETTINGS_MODULE: 'settings'
   UBERTOOL_BATCH_SERVER: 'http://uberrest-topknotmeadows.rhcloud.com/'
   UBERTOOL_MONGO_SERVER: 'http://uberrest-topknotmeadows.rhcloud.com'
   UBERTOOL_SECURE_SERVER: 'http://uberrest-topknotmeadows.rhcloud.com'

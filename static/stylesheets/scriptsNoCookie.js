@@ -515,25 +515,10 @@ $( document ).ready(function() {
 
 });
 
-// var pathArray = window.location.pathname.split('/');
 var pathArray = document.URL.split('/');
-var pathDoamin = pathArray[2];
-var pathLink = pathArray[3];
-var pathSlice = pathLink.slice(0, -5);
+var pathDomain = pathArray[2];
+var pathSlice = pathArray[4] + '_' + pathArray[5];
 var pathPage = pathSlice.split('_')[1];
-// 
-// console.log('pathArray ='+pathArray);
-// console.log('pathLink ='+pathLink);
-// console.log('pathSlice ='+pathSlice);
-
-// var pathArryURL = document.URL.split('/');
-// var pathLinkURL = pathArryURL[2];
-// console.log('pathArryURL ='+pathArryURL);
-// console.log('pathLinkURL ='+pathLinkURL);
-// console.log('Test: '+pathArryURL[3]);
-
-// var defSkinSel = {backgroundColor:'rgb(255,165,0)', color:'#FFFFFF'};
-// var epaSkinSel = {backgroundColor:'rgb(255,165,0)', color:'#FFFFFF'};
 
 // BlockUI setup
 var browserWidth = $(window).width();

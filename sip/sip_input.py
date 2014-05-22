@@ -1,13 +1,7 @@
-import os
-# os.environ['DJANGO_SETTINGS_MODULE']='settings'
-import cgi
-import cgitb
-cgitb.enable()
 from django.views.generic import View
-from django.shortcuts import render, get_object_or_404, render_to_response
+# from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.http import HttpResponse
-# from django import forms
 from sip import sip_parameters,sip_tooltips
 # from uber import uber_lib
 
