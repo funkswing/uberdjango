@@ -1,4 +1,3 @@
-from django.views.generic import View
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_http_methods
 
@@ -22,12 +21,20 @@ def sipInputPage(request):
 
     return html
 
+def sipHistoryPage(request):
+    from history import history_tables
+    from REST import rest_funcs
+
+    hist_obj = rest_funcs.user_hist('admin', 'sip')
+    html = history_tables.table_all(hist_obj)
+
+    return html
+
+# Must be last view function, all views below expect POST method
 @require_http_methods(["POST"])
-def sipOutputPage(request, linksleft=''):
-    # import os
-    # import logging
-    # logging.info('UBERTOOL_REST_SERVER = %s' %os.environ['UBERTOOL_REST_SERVER'])
+def sipOutputPage(request, model='', linksleft=''):
     from sip import sip_model,sip_tables
+    from REST import rest_funcs
 
     chemical_name = request.POST.get('chemical_name')
    # select_receptor = request.POST.get('select_receptor')
@@ -57,17 +64,16 @@ def sipOutputPage(request, linksleft=''):
 
     sip_obj = sip_model.sip(True,True,'single',chemical_name, b_species, m_species, bw_quail, bw_duck, bwb_other, bw_rat, bwm_other, sol, ld50_a, ld50_m, aw_bird, mineau, aw_mamm, noaec_d, noaec_q, noaec_o, Species_of_the_bird_NOAEC_CHOICES, noael)
 
-    html = render_to_string('01uberheader.html', {'title': 'SIP Output'})
-    html = html + render_to_string('02uberintroblock_wmodellinks.html', {'model':'sip','page':'output'})
+    html = render_to_string('01uberheader.html', {'title': header+' Output'})
+    html = html + render_to_string('02uberintroblock_wmodellinks.html', {'model':model,'page':'output'})
     html = html + linksleft
     html = html + render_to_string('04uberoutput_start.html', {
-            'model':'sip', 
-            'model_attributes':'SIP Output'})
+            'model_attributes': header+' Output'})
     html = html + sip_tables.timestamp(sip_obj)
     html = html + sip_tables.table_all(sip_obj)
     html = html + render_to_string('export.html', {})
     html = html + render_to_string('04uberoutput_end.html', {})
     html = html + render_to_string('06uberfooter.html', {'links': ''})
-    # rest_funcs.save_dic(html, sip_obj.__dict__, "sip", "single")
+    rest_funcs.save_dic(html, sip_obj.__dict__, "sip", "single")
 
     return html

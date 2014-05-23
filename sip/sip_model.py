@@ -1,5 +1,5 @@
 # Screening Imbibiton Program v1.0 (SIP)
-import rest_funcs
+from REST import rest_funcs
 import json
 import logging
 logger = logging.getLogger('SIP Model')
@@ -106,7 +106,7 @@ class sip(object):
         # response = urlfetch.fetch(url=url, payload=data, method=urlfetch.POST, headers=http_headers, deadline=60)
         response = requests.post(url, data=data, headers=http_headers, timeout=60)  
         output_val = json.loads(response.content)['result']
-        logger.info(output_val)    
+
         for key, value in output_val.items():
             setattr(self, key, value)
 

@@ -1,26 +1,20 @@
-# -*- coding: utf-8 -*-
-import os
-os.environ['DJANGO_SETTINGS_MODULE']='settings'
-import webapp2 as webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
+from django.template.loader import render_to_string
+from django.views.decorators.http import require_http_methods
+
 import numpy as np
-import cgi
-import cgitb
-cgitb.enable()
-import unittest
-from StringIO import StringIO
-from pprint import pprint
+# import unittest
+# from StringIO import StringIO
+# from pprint import pprint
 import csv
-import sys
-sys.path.append("../sip")
 from sip import sip_model,sip_tables
-from uber import uber_lib
+
 import logging
 from threading import Thread
 import Queue
 from collections import OrderedDict
-import rest_funcs
+
+from REST import rest_funcs
+
 logger = logging.getLogger("SIPBatchOutput")
 
 chemical_name=[]
@@ -187,36 +181,17 @@ def loop_html(thefile):
     return html_timestamp + sum_html + "".join(out_html_all_sort.values())
 
 
-              
-class SIPBatchOutputPage(webapp.RequestHandler):
-    def post(self):
-        form = cgi.FieldStorage()
-        logger.info(form) 
-        thefile = form['file-0']
-        iter_html=loop_html(thefile)
-        templatepath = os.path.dirname(__file__) + '/../templates/'
-        ChkCookie = self.request.cookies.get("ubercookie")
-        # html = uber_lib.SkinChk(ChkCookie)
-        # html = html + template.render(templatepath + '02uberintroblock_wmodellinks.html', {'model':'sip','page':'batchinput'})
-        # html = html + template.render (templatepath + '03ubertext_links_left.html', {})                
-        html = template.render(templatepath + '04uberbatch_start.html', {
-                'model':'sip',
-                'model_attributes':'SIP Batch Output'})
-        html = html + iter_html
-        # html = html + template.render(templatepath + 'sip-batchoutput-jqplot.html', {})
-        # html = html + template.render(templatepath + 'export.html', {})
-        html = html + template.render(templatepath + '04uberoutput_end.html', {'sub_title': ''})
-        # html = html + template.render(templatepath + '06uberfooter.html', {'links': ''})
-        rest_funcs.batch_save_dic(html, [x.__dict__ for x in sip_all], 'sip', 'batch', jid_batch[0], ChkCookie, templatepath)
-        self.response.out.write(html)
+@require_http_methods(["POST"])
+def sipBatchOutputPage(request, model='', linksleft=''):
+    thefile = request.FILES['upfile']
+    iter_html=loop_html(thefile)
 
-app = webapp.WSGIApplication([('/.*', SIPBatchOutputPage)], debug=True)
-
-def main():
-    run_wsgi_app(app)
-
-if __name__ == '__main__':
-    main()
+    html = render_to_string('04uberbatch_start.html', {
+            'model': model,
+            'model_attributes':'SIP Batch Output'})
+    html = html + iter_html
+    html = html + render_to_string('04uberoutput_end.html', {})
     
-    
+    rest_funcs.batch_save_dic(html, [x.__dict__ for x in sip_all], 'sip', 'batch', jid_batch[0], linksleft)
 
+    return html
