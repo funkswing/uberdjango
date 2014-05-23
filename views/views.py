@@ -225,7 +225,7 @@ def linksLeft():
 #######################################################################################
 
 def ecoLandingPage(request):
-    text_file2 = open('main_text.txt','r')
+    text_file2 = open('views/main_text.txt','r')
     xx = text_file2.read()
 
     html = render_to_string('01uberheader_main.html', {})
