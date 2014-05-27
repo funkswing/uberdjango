@@ -100,6 +100,17 @@ def outputPage(request, model='none'):
     response.write(html)
     return response
 
+def qaqcPage(request, model='none'):
+    viewmodule = importlib.import_module('.'+model+'_qaqc', model)
+    linksleft = linksLeft()
+
+    qaqcPageFunc = getattr(viewmodule, model+'QAQCPage')      # function name = 'model'QAQCPAge  (e.g. 'sipQAQCPage')
+    html = qaqcPageFunc(request, model, linksleft)
+
+    response = HttpResponse()
+    response.write(html)
+    return response
+
 def batchInputPage(request, model='none', header='none'):
     viewmodule = importlib.import_module('.views', model)
     header = viewmodule.header

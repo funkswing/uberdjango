@@ -1,5 +1,5 @@
 from django.template.loader import render_to_string
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_POST
 
 ################ How model name appears on web page ################
 header = 'SIP'
@@ -30,8 +30,8 @@ def sipHistoryPage(request):
 
     return html
 
-# Must be last view function, all views below expect POST method
-@require_http_methods(["POST"])
+
+@require_POST
 def sipOutputPage(request, model='', linksleft=''):
     from sip import sip_model,sip_tables
     from REST import rest_funcs

@@ -15,6 +15,7 @@ urlpatterns = patterns('views.views',
     (r'^eco/(?P<model>.*?)/references/?$', 'referencesPage'),
     (r'^eco/(?P<model>.*?)/batchinput/?$', 'batchInputPage'),
     (r'^eco/(?P<model>.*?)/batchoutput/?$', 'batchOutputPage'),
+    (r'^eco/(?P<model>.*?)/qaqc/?$', 'qaqcPage'),
     (r'^eco/(?P<model>.*?)/history/?$', 'historyPage'),
     (r'^eco/.*?/history_revisit\.html$', 'historyPageRevist'),
     (r'^eco/(?P<model>.*?)/?$', 'descriptionPage'),
@@ -24,6 +25,9 @@ urlpatterns = patterns('views.views',
     (r'^(?P<model>.*?)_output\.html$', 'outputPage'),             #Legacy links
     (r'^(?P<model>.*?)_algorithms\.html$', 'algorithmPage'),      #Legacy links
     (r'^(?P<model>.*?)_references\.html$', 'referencesPage'),     #Legacy links
+    (r'^(?P<model>.*?)_batchinput\.html$', 'batchInputPage'),     #Legacy links
+    (r'^(?P<model>.*?)_batchoutput\.html$', 'batchOutputPage'),   #Legacy links
+    (r'^(?P<model>.*?)_qaqc\.html$', 'qaqcPage'),                 #Legacy links
     (r'^(?P<model>.*?)_history\.html$', 'historyPage'),           #Legacy links
     # url(r'^admin/', include(admin.site.urls)),
 )

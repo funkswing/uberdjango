@@ -27,7 +27,7 @@ $(document).ready(function() {
             cache: false,
             type: "get",
             success: function() {
-              window.location.href = model+"_qaqc.html";
+              window.location.href = model+"/qaqc";
             },
             error: function() {
               $.unblockUI();
