@@ -1,7 +1,4 @@
-from django.template.loader import render_to_string
-
-from sip import sip_model,sip_tables
-from REST import rest_funcs
+from sip import sip_model
 import logging
 import os
 import unittest
@@ -292,20 +289,3 @@ test_suite_chron_bird_out = suite(TestCase_chron_bird_out, sip_obj=sip_obj)
 test_suite_chronconb_out = suite(TestCase_chronconb_out, sip_obj=sip_obj)
 test_suite_chron_mamm_out = suite(TestCase_chron_mamm_out, sip_obj=sip_obj)
 test_suite_chronconm_out = suite(TestCase_chronconm_out, sip_obj=sip_obj)
-
-
-def sipQAQCPage(request, model='', linksleft=''):
-    html = render_to_string('01uberheader.html', {'title': 'SIP QA/QC'})
-    html = html + render_to_string('02uberintroblock_wmodellinks.html', {'model':model,'page':'qaqc'})
-    html = html + linksleft
-    html = html + render_to_string('04uberoutput_start.html', {
-            'model':model,
-            'model_attributes':'SIP QAQC'})
-    html = html + sip_tables.timestamp(sip_obj)
-    html = html + sip_tables.table_all_qaqc(sip_obj)
-    html = html + render_to_string('export.html', {})
-    html = html + render_to_string('04uberoutput_end.html', {'sub_title': ''})
-    html = html + render_to_string('06uberfooter.html', {'links': ''})
-    rest_funcs.save_dic(html, sip_obj.__dict__, 'sip', 'qaqc')
-
-    return html

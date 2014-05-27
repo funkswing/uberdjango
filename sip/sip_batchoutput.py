@@ -1,10 +1,7 @@
-from django.template.loader import render_to_string
-from django.views.decorators.http import require_http_methods
+# from django.template.loader import render_to_string
+from django.views.decorators.http import require_POST
 
 import numpy as np
-# import unittest
-# from StringIO import StringIO
-# from pprint import pprint
 import csv
 from sip import sip_model,sip_tables
 
@@ -13,7 +10,7 @@ from threading import Thread
 import Queue
 from collections import OrderedDict
 
-from REST import rest_funcs
+# from REST import rest_funcs
 
 logger = logging.getLogger("SIPBatchOutput")
 
@@ -181,17 +178,9 @@ def loop_html(thefile):
     return html_timestamp + sum_html + "".join(out_html_all_sort.values())
 
 
-@require_http_methods(["POST"])
-def sipBatchOutputPage(request, model='', linksleft=''):
+@require_POST
+def sipBatchOutputPage(request):
     thefile = request.FILES['upfile']
     iter_html=loop_html(thefile)
 
-    html = render_to_string('04uberbatch_start.html', {
-            'model': model,
-            'model_attributes':'SIP Batch Output'})
-    html = html + iter_html
-    html = html + render_to_string('04uberoutput_end.html', {})
-    
-    rest_funcs.batch_save_dic(html, [x.__dict__ for x in sip_all], 'sip', 'batch', jid_batch[0], linksleft)
-
-    return html
+    return iter_html, sip_all, jid_batch

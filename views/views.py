@@ -91,10 +91,24 @@ def inputPage(request, model='none', header='none'):
 
 def outputPage(request, model='none'):
     viewmodule = importlib.import_module('.views', model)
-    linksleft = linksLeft()
+    tablesmodule = importlib.import_module('.'+model+'_tables', model)
+    from REST import rest_funcs
+    header = viewmodule.header
 
     outputPageFunc = getattr(viewmodule, model+'OutputPage')      # function name = 'model'OutputPage  (e.g. 'sipOutputPage')
-    html = outputPageFunc(request, model, linksleft)
+    model_obj = outputPageFunc(request)
+
+    html = render_to_string('01uberheader.html', {'title': header+' Output'})
+    html = html + render_to_string('02uberintroblock_wmodellinks.html', {'model':model,'page':'output'})
+    html = html + linksLeft()
+    html = html + render_to_string('04uberoutput_start.html', {
+            'model_attributes': header+' Output'})
+    html = html + tablesmodule.timestamp(model_obj)
+    html = html + tablesmodule.table_all(model_obj)
+    html = html + render_to_string('export.html', {})
+    html = html + render_to_string('04uberoutput_end.html', {})
+    html = html + render_to_string('06uberfooter.html', {'links': ''})
+    rest_funcs.save_dic(html, model_obj.__dict__, model, "single")
 
     response = HttpResponse()
     response.write(html)
@@ -102,10 +116,24 @@ def outputPage(request, model='none'):
 
 def qaqcPage(request, model='none'):
     viewmodule = importlib.import_module('.'+model+'_qaqc', model)
-    linksleft = linksLeft()
+    tablesmodule = importlib.import_module('.'+model+'_tables', model)
+    from REST import rest_funcs
+    header = importlib.import_module('.views', model).header
 
-    qaqcPageFunc = getattr(viewmodule, model+'QAQCPage')      # function name = 'model'QAQCPAge  (e.g. 'sipQAQCPage')
-    html = qaqcPageFunc(request, model, linksleft)
+    modelQAQC_obj = getattr(viewmodule, model+'_obj')      # Calling model object, e.g. 'sip_obj'
+
+    html = render_to_string('01uberheader.html', {'title': header+' QA/QC'})
+    html = html + render_to_string('02uberintroblock_wmodellinks.html', {'model':model,'page':'qaqc'})
+    html = html + linksLeft()
+    html = html + render_to_string('04uberoutput_start.html', {
+            'model':model,
+            'model_attributes': header+' QAQC'})
+    html = html + tablesmodule.timestamp(modelQAQC_obj)
+    html = html + tablesmodule.table_all_qaqc(modelQAQC_obj)
+    html = html + render_to_string('export.html', {})
+    html = html + render_to_string('04uberoutput_end.html', {'sub_title': ''})
+    html = html + render_to_string('06uberfooter.html', {'links': ''})
+    rest_funcs.save_dic(html, modelQAQC_obj.__dict__, model, 'qaqc')
 
     response = HttpResponse()
     response.write(html)
@@ -129,12 +157,25 @@ def batchInputPage(request, model='none', header='none'):
     response.write(html)
     return response
 
-def batchOutputPage(request, model='none'):
+def batchOutputPage(request, model='none', header='none'):
+    importlib.import_module('.'+model+'_model', model)
     viewmodule = importlib.import_module('.'+model+'_batchoutput', model)
+    from REST import rest_funcs
+    header = importlib.import_module('.views', model).header
     linksleft = linksLeft()
 
+    html = render_to_string('04uberbatch_start.html', {
+            'model': model,
+            'model_attributes': header+' Batch Output'})
+
     batchOutputPageFunc = getattr(viewmodule, model+'BatchOutputPage')  # function name = 'model'BatchOutputPage  (e.g. 'sipBatchOutputPage')
-    html = batchOutputPageFunc(request, model, linksleft)
+    batchOutputTuple = batchOutputPageFunc(request)
+    html = html + batchOutputTuple[0]
+    html = html + render_to_string('04uberoutput_end.html', {})
+
+    model_all = batchOutputTuple[1]
+    jid_batch = batchOutputTuple[2]
+    rest_funcs.batch_save_dic(html, [x.__dict__ for x in model_all], model, 'batch', jid_batch[0], linksleft)
 
     response = HttpResponse()
     response.write(html)
