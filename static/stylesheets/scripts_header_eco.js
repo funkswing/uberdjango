@@ -27,7 +27,11 @@ $(document).ready(function() {
             cache: false,
             type: "get",
             success: function() {
-              window.location.href = "qaqc";
+              if (cur_url.indexOf(model+'/') !== -1) {
+                window.location.href = "qaqc";
+              } else {
+                window.location.href = model+"/qaqc";
+              }
             },
             error: function() {
               $.unblockUI();

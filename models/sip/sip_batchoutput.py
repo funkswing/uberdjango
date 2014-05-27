@@ -1,16 +1,12 @@
-# from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 
-import numpy as np
 import csv
-from sip import sip_model,sip_tables
+import sip_model,sip_tables
 
 import logging
 from threading import Thread
 import Queue
 from collections import OrderedDict
-
-# from REST import rest_funcs
 
 logger = logging.getLogger("SIPBatchOutput")
 

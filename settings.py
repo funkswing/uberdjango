@@ -61,7 +61,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     # 'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sip',
+    # 'models.terrplant',
+    # 'models.sip',
 )
 
 MIDDLEWARE_CLASSES = (

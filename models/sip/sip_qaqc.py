@@ -1,4 +1,4 @@
-from sip import sip_model
+import sip_model
 import logging
 import os
 import unittest
@@ -8,7 +8,7 @@ import csv
 logger = logging.getLogger('SIPQaqcPage')
 
 cwd= os.getcwd()
-data = csv.reader(open(cwd+'/sip/sip_qaqc.csv'))
+data = csv.reader(open(cwd+'/models/sip/sip_qaqc.csv'))
 
 chemical_name=[]
 b_species=[]

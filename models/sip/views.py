@@ -6,9 +6,9 @@ header = 'SIP'
 ####################################################################
 
 def sipInputPage(request):
-    from sip import sip_parameters,sip_tooltips
+    import sip_parameters,sip_tooltips
 
-    html = render_to_string('sip_ubertool_config_input.html', {})  
+    html = render_to_string('sip_ubertool_config_input.html', {})
     html = html + str(sip_parameters.SIPInp())
     html = html + render_to_string('04uberinput_end.html', {'sub_title': 'Submit'})
     html = html + render_to_string('sip_ubertool_config.html', {})
@@ -21,19 +21,10 @@ def sipInputPage(request):
 
     return html
 
-def sipHistoryPage(request):
-    from history import history_tables
-    from REST import rest_funcs
-
-    hist_obj = rest_funcs.user_hist('admin', 'sip')
-    html = history_tables.table_all(hist_obj)
-
-    return html
-
 
 @require_POST
 def sipOutputPage(request):
-    from sip import sip_model
+    import sip_model
 
     chemical_name = request.POST.get('chemical_name')
    # select_receptor = request.POST.get('select_receptor')
